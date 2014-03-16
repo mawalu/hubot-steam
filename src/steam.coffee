@@ -10,8 +10,8 @@ class SteamBot extends Adapter
   run: ->
     @bot = new Steam.SteamClient
     @bot.logOn({ 
-      accountName:'dobsbot',
-      password:'ultrak1ll'
+      accountName:'user',
+      password:'pwd'
       });
     @robot.logger.info "Running!1"
     
@@ -31,7 +31,7 @@ class SteamBot extends Adapter
 
   gotFriendRequest: (source, type) =>
     if type == Steam.EFriendRelationship.PendingInvitee
-      @bot.sendMessage("76561197963067124", "Got friended by someone", Steam.EChatEntryType.ChatMsg)
+      #@bot.sendMessage("76561197963067124", "Got friended by someone", Steam.EChatEntryType.ChatMsg)
       @bot.addFriend(source)
 
   loggedOn: (source, message, type, chatter) =>

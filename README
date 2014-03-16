@@ -1,0 +1,12 @@
+Well, it's a first mini-commit for my steam adapter.
+
+It works, but user/pwd are hardcoded.
+
+node-steam is Required for this adapter to work.
+
+To get it running: Create a steam account for your bot.
+Set the username/password in steam.coffee.
+
+If anyone friends your hubot, hubot will friend him back.
+
+Enjoy. If I get to it, i'll update it.
