@@ -10,8 +10,8 @@ class SteamBot extends Adapter
   run: ->
     @bot = new Steam.SteamClient
     @bot.logOn({ 
-      accountName:'user',
-      password:'pwd'
+      accountName: process.env.HUBOT_STEAM_NAME,
+      password: process.env.HUBOT_STEAM_PASSWORD
       });
     @robot.logger.info "Running!1"
     
