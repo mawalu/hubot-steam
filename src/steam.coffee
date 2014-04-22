@@ -20,6 +20,7 @@ class SteamBot extends Adapter
     @bot.on 'friendMsg', @.gotMessage
     @bot.on 'friend', @.gotFriendRequest
     @bot.on 'relationships', @.relationshipChanged
+    @bot.on 'error', @.error
 
   gotMessage: (source, message, type, chatter) =>
     if message != ""
@@ -32,11 +33,12 @@ class SteamBot extends Adapter
 
   gotFriendRequest: (source, type) =>
     if type == Steam.EFriendRelationship.PendingInvitee
-      #@bot.sendMessage("76561197963067124", "Got friended by someone", Steam.EChatEntryType.ChatMsg)
+      @robot.logger.info "Recived friend request"
       @bot.addFriend(source)
 
   loggedOn: (source, message, type, chatter) =>
     @bot.setPersonaState(Steam.EPersonaState.Online)
+    @robot.logger.info "Connected"
     @emit("connected")
     @emit("relationships")
 
@@ -47,6 +49,9 @@ class SteamBot extends Adapter
   reply: (envelope, messages...) =>
     for message in messages
        @bot.sendMessage(envelope.user.id,message, Steam.EChatEntryType.ChatMsg)
+
+  error: (e) =>
+    @robot.logger.info e.cause
     
     
 
