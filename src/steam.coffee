@@ -1,4 +1,5 @@
-{Adapter,Robot,TextMessage,EnterMessage,LeaveMessage} = require 'hubot'
+{Robot, Adapter, TextMessage, EnterMessage, LeaveMessage, Response} = require 'hubot'
+
 Steam = require('steam');
 
 class SteamBot extends Adapter

@@ -1,6 +1,6 @@
 {
   "name": "hubot-steam",
-  "version": "0.0.2",
+  "version": "0.0.3",
   "author": {
     "name": "Dobs",
     "email": "dobs@dobs.at",
@@ -27,7 +27,8 @@
   "main": "./src/steam",
   "engine": "node > 0.6.0 < 0.8.0",
   "dependencies": {
-	  "coffee-script":""
+	  "coffee-script":"",
+    "steam":""
   },
   "devDependencies": {
     "coffee-script": "1.1.3",
