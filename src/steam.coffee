@@ -1,19 +1,27 @@
 {Robot, Adapter, TextMessage, EnterMessage, LeaveMessage, Response} = require 'hubot'
 
-Steam = require('steam');
+Steam = require 'steam'
 
 class SteamBot extends Adapter
-
 
   constructor: ( robot ) ->
     @robot = robot
 
   run: ->
-    @bot = new Steam.SteamClient
-    @bot.logOn({ 
+    login = 
       accountName: process.env.HUBOT_STEAM_NAME,
-      password: process.env.HUBOT_STEAM_PASSWORD
-      });
+      password: process.env.HUBOT_STEAM_PASSWORD,
+
+    if process.env.HUBOT_STEAM_CODE
+      login.authCode = process.env.HUBOT_STEAM_CODE
+
+    if process.env.HUBOT_STEAM_SENTRY_HASH
+      login.shaSentryfile = process.env.HUBOT_STEAM_SENTRY_HASH
+
+    @robot.logger.info login
+
+    @bot = new Steam.SteamClient   
+    @bot.logOn(login);
     @robot.logger.info "Running!1"
     
     @bot.on 'loggedOn', @.loggedOn
@@ -21,12 +29,12 @@ class SteamBot extends Adapter
     @bot.on 'friend', @.gotFriendRequest
     @bot.on 'relationships', @.relationshipChanged
     @bot.on 'error', @.error
+    @bot.on 'sentry', @.gotsentry
 
   gotMessage: (source, message, type, chatter) =>
     if message != ""
       user = id: source, name: 'Steam', room: 'priv' 
       @receive new TextMessage user, message, 1
-
 
   relationshipChanged: () =>
     @logger.info @friends
@@ -51,10 +59,11 @@ class SteamBot extends Adapter
        @bot.sendMessage(envelope.user.id,message, Steam.EChatEntryType.ChatMsg)
 
   error: (e) =>
-    @robot.logger.info e.cause
-    
-    
+    @robot.logger.info e
 
+  gotsentry: (s) =>
+    @robot.logger.info "Recived sentry hash from steam"
+    fs.writeFile("sentry.bin", s, (err) -> {})
+    
 exports.use = (robot) ->
   new SteamBot robot
-
