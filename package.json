@@ -19,10 +19,10 @@
   ],
   "repository": {
     "type": "git",
-    "url": "git://github.com/dobs/hubot-steam.git"
+    "url": "git://github.com/Mawalu/hubot-steam.git"
   },
   "bugs": {
-    "url": "http://github.com/dobs/hubot-steam/issues"
+    "url": "http://github.com/Mawalu/hubot-steam/issues"
   },
   "main": "./src/steam",
   "engine": "node > 0.6.0 < 0.8.0",
