@@ -24,7 +24,7 @@
   "bugs": {
     "url": "http://github.com/dobs/hubot-steam/issues"
   },
-  "main": "./src/steam.coffee",
+  "main": "./src/steam",
   "engine": "node > 0.6.0 < 0.8.0",
   "dependencies": {
 	  "coffee-script":""
