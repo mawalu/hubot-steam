@@ -19,8 +19,9 @@
   "main": "./src/steam",
   "engine": "node > 0.6.0 < 0.8.0",
   "dependencies": {
-	  "coffee-script":"",
-    "steam":""
+    "coffee-script":"",
+    "steam":"",
+    "request": ""
   }
 }
 
