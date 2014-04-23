@@ -25,8 +25,7 @@ class SteamBot extends Adapter
   gotMessage: (source, message, type, chatter) =>
     if message != ""
       @getProfileUrl source, () ->
-        @robot.logger.info @steamurl
-        user = id: source, name: @steamurl, room: 'priv' 
+        user = id: source, name: @steamurl, room: 'priv'
         @receive new TextMessage user, message, 1
 
   relationshipChanged: () =>
@@ -55,21 +54,26 @@ class SteamBot extends Adapter
     @robot.logger.error e.cause
 
   getProfileUrl: (id, callback) =>
-    parent = this
-    request 
-      uri: "https://steamcommunity.com/profiles/#{id}"
-      followRedirect: false
-      , (err, res, body) ->
+    if @robot.brain.userForId(id).name isnt id
+      @steamurl = @robot.brain.userForId(id).name
+      callback.call @
+    else 
+      parent = @
+      request 
+        uri: "https://steamcommunity.com/profiles/#{id}"
+        followRedirect: false
+        , (err, res, body) ->
 
-        parent.steamurl = "Steam"
+          parent.steamurl = "Steam"
 
-        if res.statusCode is 302
-          parent.robot.logger.error err if err
-          redirect = res.headers.location.split "/"
-          parent.steamurl = redirect[4] unless redirect[3] is "profiles"
-          
-        callback.call parent
-    .call this 
+          if res.statusCode is 302
+            parent.robot.logger.error err if err
+            redirect = res.headers.location.split "/"
+            parent.steamurl = redirect[4] unless redirect[3] is "profiles"
+            parent.robot.brain.userForId id, { name: parent.steamurl, room: "steam"  }
+
+          callback.call parent
+      .call this 
 
 exports.use = (robot) ->
   new SteamBot robot
