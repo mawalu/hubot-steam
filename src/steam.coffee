@@ -29,7 +29,6 @@ class SteamBot extends Adapter
     @bot.on 'friend', @.gotFriendRequest
     @bot.on 'relationships', @.relationshipChanged
     @bot.on 'error', @.error
-    @bot.on 'sentry', @.gotsentry
 
   gotMessage: (source, message, type, chatter) =>
     if message != ""
@@ -60,10 +59,6 @@ class SteamBot extends Adapter
 
   error: (e) =>
     @robot.logger.info e
-
-  gotsentry: (s) =>
-    @robot.logger.info "Recived sentry hash from steam"
-    fs.writeFile("sentry.bin", s, (err) -> {})
-    
+   
 exports.use = (robot) ->
   new SteamBot robot
