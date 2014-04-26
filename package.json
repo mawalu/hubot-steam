@@ -1,22 +1,14 @@
 {
   "name": "hubot-steam",
-  "version": "0.0.3",
-  "author": {
-    "name": "Dobs",
-    "email": "dobs@dobs.at",
-    "url": "http://dobs.at"
-  },
+  "version": "0.0.6",
+  "author": "Mawalu, derdobs",
   "description": "Steam adapter for Hubot.",
   "keywords": [
     "hubot",
     "steam",
     "adapter"
   ],
-  "licenses": [
-    {
-      "type": "Whatever"
-    }
-  ],
+  "licenses": "MIT",
   "repository": {
     "type": "git",
     "url": "git://github.com/Mawalu/hubot-steam.git"
@@ -27,12 +19,9 @@
   "main": "./src/steam",
   "engine": "node > 0.6.0 < 0.8.0",
   "dependencies": {
-	  "coffee-script":"",
-    "steam":""
-  },
-  "devDependencies": {
-    "coffee-script": "1.1.3",
-    "hubot": ">=2.4.1"
+    "coffee-script":"",
+    "steam":"",
+    "request": ""
   }
 }
 
