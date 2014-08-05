@@ -1,6 +1,6 @@
 {
   "name": "hubot-steam",
-  "version": "0.1",
+  "version": "0.1.0",
   "author": "Mawalu, derdobs",
   "description": "Steam adapter for Hubot.",
   "keywords": [

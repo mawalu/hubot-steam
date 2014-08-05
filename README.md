@@ -26,6 +26,14 @@ otherwise it's a bit more complicated.
 5. Restart hubot. After you logged in, the hash should be registered with your account.
 6. Unset `HUBOT_STEAM_CODE` and restart hubot. You will now be able to log into your steamguard protect account, as long as you set `HUBOT_STEAM_SENTRY_HASH` to the registered value.
 
+###Groupchats
+!!!Important: You can only use groupchats if you *BOUGHT* at least one game on you bot account!
+To use groupchats, set `HUBOT_STEAM_CHATS` to a comma seperated list of group IDs. To obtain these, follow the three steps here:
+
+* Go to your `GROUPS` page on steam
+* Right click on a group name and chose `Copy Link Address`
+* And there is your group ID
+
 ##About
 This was original created by [derdobs](https://github.com/derdobs). At the moment it gets 
 improved and extended by me.
