@@ -1,6 +1,7 @@
 #Hubot steam
-[![NPM version](https://badge.fury.io/js/hubot-steam.svg)](http://badge.fury.io/js/hubot-steam)
+[![NPM version](https://badge.fury.io/js/hubot-steam.svg)](http://badge.fury.io/js/hubot-steam)  
 A hubot adapter for the steam network.
+
 ##Installation
 Add `hubot-steam` to your package.json dependencies and run
 ```
