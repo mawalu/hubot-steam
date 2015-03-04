@@ -23,7 +23,7 @@ class SteamBot extends Adapter
 
     @steam = new Steam.SteamClient
     @steam.logOn login
-    @robot.logger.info "Running!1"
+    @robot.logger.info "Running!"
     
     @steam.on 'friendMsg', @gotFriendMessage
     @steam.on 'loggedOn', @loggedOn
