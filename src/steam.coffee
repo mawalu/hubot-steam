@@ -10,7 +10,7 @@ class SteamBot extends Adapter
 
   run: ->
     login =
-      accountName: process.env.HUBOT_STEAM_NAME,
+      account_name: process.env.HUBOT_STEAM_NAME,
       password: process.env.HUBOT_STEAM_PASSWORD,
 
     if process.env.HUBOT_STEAM_CODE
@@ -21,19 +21,28 @@ class SteamBot extends Adapter
 
     @robot.logger.info login
 
-    @steam = new Steam.SteamClient
-    @steam.logOn login
-    @robot.logger.info "Running!"
+    @steamClient = new Steam.SteamClient()
+    @steamClient.connect();
+    @steamUser = new Steam.SteamUser(@steamClient)
+    @steamFriends = new Steam.SteamFriends(@steamClient)
+    @steamClient.on 'connected', () =>
+      @robot.logger.info "Connected"
+      @steamUser.logOn login
+    @robot.logger.info "Running!1"
     
-    @steam.on 'friendMsg', @gotFriendMessage
-    @steam.on 'loggedOn', @loggedOn
-    @steam.on 'chatMsg', @gotGroupMessage
-    @steam.on 'friend', @gotFriendActivity
-    @steam.on 'error', @error
+    @steamFriends.on 'friendMsg', @gotFriendMessage
+    @steamClient.on 'logOnResponse', @logOnResponse
+    @steamFriends.on 'logOnResponse', @logOnResponse
+    @steamUser.on 'logOnResponse', @logOnResponse
+    @steamClient.on 'loggedOff', () =>
+      @robot.logger.info "You have been logged off"
+    @steamFriends.on 'chatMsg', @gotGroupMessage
+    @steamFriends.on 'friend', @gotFriendActivity
+    @steamClient.on 'error', @error
     @on 'connected', @joinChats
 
-  loggedOn: () =>
-    @steam.setPersonaState(Steam.EPersonaState.Online)
+  logOnResponse: () =>
+    @steamFriends.setPersonaState(Steam.EPersonaState.Online)
     @robot.logger.info "Connected"
     @emit "connected"
     @emit "relationships"
@@ -52,16 +61,16 @@ class SteamBot extends Adapter
 
   gotFriendActivity: (source, type) =>
     if type == Steam.EFriendRelationship.PendingInvitee
-      @robot.logger.info "Recived friend request"
-      @steam.addFriend(source)
+      @robot.logger.info "Received friend request"
+      @steamFriends.addFriend(source)
 
   send: (envelope, messages...) =>
      for message in messages
-      @steam.sendMessage(envelope.user.id,message, Steam.EChatEntryType.ChatMsg)
+      @steamFriends.sendMessage(envelope.user.id,message, Steam.EChatEntryType.ChatMsg)
 
   reply: (envelope, messages...) =>
     for message in messages
-      @steam.sendMessage(envelope.user.id,message, Steam.EChatEntryType.ChatMsg)
+      @steamFriends.sendMessage(envelope.user.id,message, Steam.EChatEntryType.ChatMsg)
 
   error: (e) =>
     @robot.logger.error e.cause
@@ -69,7 +78,7 @@ class SteamBot extends Adapter
   joinChats: () =>
     for room in process.env.HUBOT_STEAM_CHATS.split ","
       @robot.logger.info "Joining groupchat #{room}"
-      @steam.joinChat room unless room is ""
+      @steamFriends.joinChat room unless room is ""
 
   getProfileUrl: (id, callback) =>
     if @robot.brain.userForId(id).name isnt id
