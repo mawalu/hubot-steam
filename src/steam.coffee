@@ -22,9 +22,11 @@ class SteamBot extends Adapter
     @robot.logger.info login
 
     @steamClient = new Steam.SteamClient()
-    @steamClient.connect();
     @steamUser = new Steam.SteamUser(@steamClient)
     @steamFriends = new Steam.SteamFriends(@steamClient)
+    @steamTrading = new Steam.SteamTrading(@steamClient)
+
+    @steamClient.connect();
     @steamClient.on 'connected', () =>
       @robot.logger.info "Connected"
       @steamUser.logOn login
@@ -40,6 +42,13 @@ class SteamBot extends Adapter
     @steamFriends.on 'friend', @gotFriendActivity
     @steamClient.on 'error', @error
     @on 'connected', @joinChats
+
+    return {
+      steamClient: @steamClient
+      steamFriends: @steamFriends
+      steamUser: @steamUser
+      steamTrading: @steamTrading
+    }
 
   logOnResponse: () =>
     @steamFriends.setPersonaState(Steam.EPersonaState.Online)
