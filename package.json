@@ -16,12 +16,14 @@
   "bugs": {
     "url": "http://github.com/jorisvddonk/hubot-steam/issues"
   },
-  "main": "./src/steam",
+  "main": "./src/steam.coffee",
   "engine": "node > 4.0.0",
   "dependencies": {
-    "coffee-script":"1.10.0",
     "steam":"1.4.0",
     "request": "2.67.0"
+  },
+  "devDependencies": {
+    "coffee-script":"1.10.0"    
   }
 }
 
