@@ -65,7 +65,7 @@ class SteamBot extends Adapter
   gotGroupMessage: (source, message, type, chatter) =>
     if message != ""
       @getProfileUrl chatter, () ->
-        details = id: source, name: @steamurl, room: source
+        details = id: chatter, name: @steamurl, room: source
         @receive new TextMessage details, message, 1
 
   gotFriendActivity: (source, type) =>
@@ -79,7 +79,8 @@ class SteamBot extends Adapter
 
   reply: (envelope, messages...) =>
     for message in messages
-      @steamFriends.sendMessage(envelope.user.id,message, Steam.EChatEntryType.ChatMsg)
+      target = if envelope.user.room != 'priv' && envelope.user.room != undefined then envelope.user.room else envelope.user.id
+      @steamFriends.sendMessage(target,message, Steam.EChatEntryType.ChatMsg)
 
   error: (e) =>
     @robot.logger.error e.cause
