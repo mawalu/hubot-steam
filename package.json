@@ -1,7 +1,7 @@
 {
   "name": "hubot-steam",
-  "version": "0.1.2",
-  "author": "Mawalu, derdobs, jorisvddonk",
+  "version": "0.2.0",
+  "author": "derdobs, Mawalu, jorisvddonk, aairey",
   "description": "Steam adapter for Hubot.",
   "keywords": [
     "hubot",
@@ -11,10 +11,10 @@
   "licenses": "MIT",
   "repository": {
     "type": "git",
-    "url": "git://github.com/jorisvddonk/hubot-steam.git"
+    "url": "git://github.com/aairey/hubot-steam.git"
   },
   "bugs": {
-    "url": "http://github.com/jorisvddonk/hubot-steam/issues"
+    "url": "http://github.com/aairey/hubot-steam/issues"
   },
   "main": "./src/steam.coffee",
   "engine": "node > 4.0.0",
