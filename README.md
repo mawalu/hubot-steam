@@ -3,7 +3,11 @@
 A hubot adapter for the steam network.
 
 ##Installation
-Add `hubot-steam` to your package.json dependencies and run
+Add `hubot-steam` to your package.json dependencies, like this:
+```
+"hubot-steam": "jorisvddonk/hubot-steam"
+```
+then run
 ```
 npm install
 ```
