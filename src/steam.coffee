@@ -26,12 +26,12 @@ class SteamBot extends Adapter
     @steamFriends = new Steam.SteamFriends(@steamClient)
     @steamTrading = new Steam.SteamTrading(@steamClient)
 
-    @steamClient.connect();
+    @steamClient.connect()
     @steamClient.on 'connected', () =>
       @robot.logger.info "Connected"
       @steamUser.logOn login
     @robot.logger.info "Running!1"
-    
+
     @steamFriends.on 'friendMsg', @gotFriendMessage
     @steamClient.on 'logOnResponse', @logOnResponse
     @steamFriends.on 'logOnResponse', @logOnResponse
@@ -75,12 +75,11 @@ class SteamBot extends Adapter
 
   send: (envelope, messages...) =>
      for message in messages
-      @steamFriends.sendMessage(envelope.user.id,message, Steam.EChatEntryType.ChatMsg)
+      @steamFriends.sendMessage(envelope.user.room,message, Steam.EChatEntryType.ChatMsg)
 
   reply: (envelope, messages...) =>
     for message in messages
-      target = if envelope.user.room != 'priv' && envelope.user.room != undefined then envelope.user.room else envelope.user.id
-      @steamFriends.sendMessage(target,message, Steam.EChatEntryType.ChatMsg)
+      @steamFriends.sendMessage(envelop.user.id,message, Steam.EChatEntryType.ChatMsg)
 
   error: (e) =>
     @robot.logger.error e.cause
