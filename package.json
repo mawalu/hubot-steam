@@ -11,10 +11,10 @@
   "licenses": "MIT",
   "repository": {
     "type": "git",
-    "url": "git://github.com/aairey/hubot-steam.git"
+    "url": "git://github.com/Mawalu/hubot-steam.git"
   },
   "bugs": {
-    "url": "http://github.com/aairey/hubot-steam/issues"
+    "url": "http://github.com/Mawalu/hubot-steam/issues"
   },
   "main": "./src/steam.coffee",
   "engine": "node > 4.0.0",
