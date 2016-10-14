@@ -39,4 +39,5 @@ To use groupchats, set `HUBOT_STEAM_CHATS` to a comma seperated list of group ID
 
 ##About
 This was original created by [derdobs](https://github.com/derdobs). At the moment it gets 
-improved and extended by me.
+improved and extended by [Mawalu](https://github.com/Mawalu), [jorisvddonk](https://github.com/jorisvddonk) and [aairey](https://github.com/aairey).
+
