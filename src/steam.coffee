@@ -14,10 +14,10 @@ class SteamBot extends Adapter
       password: process.env.HUBOT_STEAM_PASSWORD,
 
     if process.env.HUBOT_STEAM_CODE
-      login.authCode = process.env.HUBOT_STEAM_CODE
+      login.auth_code = process.env.HUBOT_STEAM_CODE
 
     if process.env.HUBOT_STEAM_SENTRY_HASH
-      login.shaSentryfile = process.env.HUBOT_STEAM_SENTRY_HASH
+      login.sha_sentryfile = process.env.HUBOT_STEAM_SENTRY_HASH
 
     @robot.logger.info login
 
@@ -43,6 +43,9 @@ class SteamBot extends Adapter
     @steamClient.on 'error', @error
     @on 'connected', @joinChats
 
+    @steamUser.on 'updateMachineAuth', (update) =>
+      @robot.logger.info 'New sentry update', update
+
     return {
       steamClient: @steamClient
       steamFriends: @steamFriends
@@ -52,20 +55,20 @@ class SteamBot extends Adapter
 
   logOnResponse: () =>
     @steamFriends.setPersonaState(Steam.EPersonaState.Online)
-    @robot.logger.info "Connected"
+    @robot.logger.info "Logged on"
     @emit "connected"
     @emit "relationships"
 
   gotFriendMessage: (source, message, type) =>
     if message != ""
-      @getProfileUrl source, () ->
-        user = id: source, name: @steamurl, room: 'priv'
+      @getProfileUrl source, (steamurl) =>
+        user = id: source, name: steamurl, room: 'priv'
         @receive new TextMessage user, message, 1
 
   gotGroupMessage: (source, message, type, chatter) =>
     if message != ""
-      @getProfileUrl chatter, () ->
-        details = id: chatter, name: @steamurl, room: source
+      @getProfileUrl chatter, (steamurl) =>
+        details = id: chatter, name: steamurl, room: source
         @receive new TextMessage details, message, 1
 
   gotFriendActivity: (source, type) =>
@@ -74,42 +77,41 @@ class SteamBot extends Adapter
       @steamFriends.addFriend(source)
 
   send: (envelope, messages...) =>
-     for message in messages
-      @steamFriends.sendMessage(envelope.user.room,message, Steam.EChatEntryType.ChatMsg)
+    for message in messages
+      @steamFriends.sendMessage(envelope.user.id, message, Steam.EChatEntryType.ChatMsg)
 
   reply: (envelope, messages...) =>
     for message in messages
-      @steamFriends.sendMessage(envelop.user.id,message, Steam.EChatEntryType.ChatMsg)
+      @steamFriends.sendMessage(envelope.user.id, message, Steam.EChatEntryType.ChatMsg)
 
   error: (e) =>
-    @robot.logger.error e.cause
+    @robot.logger.error e
 
   joinChats: () =>
+    return true unless process.env.HUBOT_STEAM_CHATS
+
     for room in process.env.HUBOT_STEAM_CHATS.split ","
       @robot.logger.info "Joining groupchat #{room}"
       @steamFriends.joinChat room unless room is ""
 
   getProfileUrl: (id, callback) =>
     if @robot.brain.userForId(id).name isnt id
-      @steamurl = @robot.brain.userForId(id).name
-      callback.call @
+      callback @robot.brain.userForId(id).name
     else
-      parent = @
       request
         uri: "https://steamcommunity.com/profiles/#{id}"
         followRedirect: false
-        , (err, res, body) ->
+        , (err, res, body) =>
 
-          parent.steamurl = "noname"
+          steamurl = "noname"
 
           if res.statusCode is 302
-            parent.robot.logger.error err if err
+            @robot.logger.error err if err
             redirect = res.headers.location.split "/"
-            parent.steamurl = redirect[4] unless redirect[3] is "profiles"
-            parent.robot.brain.userForId id, { name: parent.steamurl, room: "steam"  }
+            steamurl = redirect[4] unless redirect[3] is "profiles"
+            @robot.brain.userForId id, { name: steamurl, room: "steam"  }
 
-          callback.call parent
-      .call @
+          callback steamurl
 
 exports.use = (robot) ->
   new SteamBot robot
